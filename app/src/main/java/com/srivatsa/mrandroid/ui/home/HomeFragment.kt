@@ -1,14 +1,20 @@
 package com.srivatsa.mrandroid.ui.home
 
+import android.annotation.SuppressLint
+import android.net.http.SslError
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.SslErrorHandler
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.srivatsa.mrandroid.R
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
@@ -27,5 +33,19 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
         return root
+        webView.loadUrl("https://mrandroid.in")
+    }
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun initWebView() {
+        webView.settings.javaScriptEnabled = true
+        webView.settings.loadWithOverviewMode = true
+        webView.settings.useWideViewPort = true
+        webView.settings.domStorageEnabled = true
+        webView.webViewClient = object : WebViewClient() {
+            override
+            fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+                handler?.proceed()
+            }
+        }
     }
 }
